@@ -1,4 +1,8 @@
-.inputForm {
+.content {
+  margin: 100px;
+}
+
+.inputAndOutputForm {
   display: flex;
   flex-direction: column;
   align-items: center;
