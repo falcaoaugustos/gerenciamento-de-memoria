@@ -19,3 +19,20 @@
 #submitInputForm {
   margin: 10px 0 0 0;
 }
+
+.standardFormItem {
+  width: 600px;
+  margin: 10px 0;
+  display: flex;
+}
+
+.managerAlgorithmsButton {
+  padding: 0px;
+  border: none;
+  flex: 1;
+  height: 35px;
+}
+
+.managerAlgorithmsButton:hover {
+  background-color: #555555;
+}
