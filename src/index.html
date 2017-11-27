@@ -17,12 +17,11 @@
           <label class="inputFormItem">Arquivo com as requisições de acesso a disco:</label>
           <input class="inputFormItem" type="file" name="requestsFile">
           <div class="standardFormItem">
-            <button class="managerAlgorithmsButton">FIFO</button>
-            <button class="managerAlgorithmsButton">SSF</button>
-            <button class="managerAlgorithmsButton">SCAN</button>
-            <button class="managerAlgorithmsButton">C-SCAN</button>
+            <button class="managerAlgorithmsButton" onclick="fifo()">FIFO</button>
+            <button class="managerAlgorithmsButton" onclick="ssf()">SSF</button>
+            <button class="managerAlgorithmsButton" onclick="scan()">SCAN</button>
+            <button class="managerAlgorithmsButton" onclick="cscan()">C-SCAN</button>
           </div>
-          <input class="inputFormItem" id="submitInputForm" type="submit" value="LoadValues">
         </form>
       </div>
     </div>
@@ -41,5 +40,6 @@
           </form>
         </div>
       </div>
+      <script src="main.js"></script>
   </body>
 </html>
