@@ -2,7 +2,7 @@
   margin: 100px;
 }
 
-.inputAndOutputForm {
+#inputForm {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -35,4 +35,10 @@
 
 .managerAlgorithmsButton:hover {
   background-color: #555555;
+}
+
+.outputInfo {
+  width: 600px;
+  padding: 5px 0;
+  text-align: center;
 }

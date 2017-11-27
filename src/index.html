@@ -7,7 +7,7 @@
   <body>
     <div class="container">
       <div class="content">
-        <form class="inputAndOutputForm">
+        <form id="inputForm">
           <label class="inputFormItem">Quantos cilindros?</label>
           <input class="inputFormItem" type="text" name="cylinder">
           <label class="inputFormItem">Qual a posição inicial do braço do disco?</label>
@@ -27,17 +27,15 @@
     </div>
     <div class="container">
         <div class="content">
-          <form class="inputAndOutputForm">
-            <label class="inputFormItem">Deslocamentos:</label>
-            <input class="inputFormItem" type="text" name="displacement">
-            <label class="inputFormItem">Média de Deslocamentos:</label>
-            <input class="inputFormItem" type="text" name="avarageDisplacement">
-            <label class="inputFormItem">Variância:</label>
-            <input class="inputFormItem" type="text" name="variance">
-            <label class="inputFormItem">Desvio Padrão:</label>
-            <input class="inputFormItem" type="text" name="standardDeviation">
-            <div id="sortedOutputFile"></div>
-          </form>
+          <h2 class="outputInfo">Deslocamentos:</h2>
+          <p class="outputInfo" id="outputDisplacement"></p>
+          <h2 class="outputInfo">Média de Deslocamentos:</h2>
+          <p class="outputInfo" id="outputAvarageDisplacement"></p>
+          <h2 class="outputInfo">Variância:</h2>
+          <p class="outputInfo" id="outputVariance"></p>
+          <h2 class="outputInfo">Desvio Padrão:</h2>
+          <p class="outputInfo" id="outputStandardDeviation"></p>
+          <div id="sortedOutputFile"></div>
         </div>
       </div>
       <script src="main.js"></script>
