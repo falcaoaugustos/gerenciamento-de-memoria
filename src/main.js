@@ -3,6 +3,7 @@ const data = "12-9-43-32-50-43-40-20-36-8-34-3-44-12-32-10-8-18-43-11-";
 var cylinder = 0;
 var initialPosition = 0;
 var seekTime = 0;
+var inputFile = null;
 
 var displacement = document.getElementById("outputDisplacement");
 var avarageDisplacement = document.getElementById("outputAvarageDisplacement");
@@ -14,6 +15,13 @@ function getInputData() {
   cylinder = inputForm.elements.namedItem("cylinder").value;
   initialPosition = inputForm.elements.namedItem("armInitialPosition").value;
   seekTime = inputForm.elements.namedItem("seekTime").value;
+  inputFile = inputForm.elements.namedItem("requestsFile").files[0];
+}
+
+function transformInputFile(inputFile, cb) {
+  var reader = new FileReader();
+  reader.onloadend = () => cb(reader.result);
+  reader.readAsText(inputFile);
 }
 
 function transformStringData(data) {
@@ -55,6 +63,7 @@ function calculateVariance(avarage, data) {
 // calculateStandardDeviation() {}
 
 function loadOutput(initialPosition, data) {
+  console.log(data);
   displacement.innerHTML = calculateDisplacement(initialPosition, data);
   avarageDisplacement.innerHTML = calculateAvarageDisplacement(displacement.innerHTML, data);
   variance.innerHTML = calculateVariance(avarageDisplacement.innerHTML, data);
@@ -62,7 +71,7 @@ function loadOutput(initialPosition, data) {
 
 function fifo() {
   getInputData();
-  loadOutput(initialPosition, transformStringData(data));
+  transformInputFile(inputFile, algorithms.fifo);
 }
 
 function ssf() {
@@ -75,4 +84,8 @@ function scan() {
 
 function cscan() {
   alert("algoritmo C-SCAN");
+}
+
+const algorithms = {
+  fifo: result => { loadOutput(initialPosition, transformStringData(result)); }
 }
