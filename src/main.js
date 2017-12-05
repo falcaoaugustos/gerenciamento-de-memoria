@@ -89,8 +89,43 @@ function fifo() {
   transformInputFile(inputFile, algorithms.fifo);
 }
 
+function sortSSF(initialPosition, data) {
+  data.sort(auxSortFunc);
+  var currentValue = initialPosition;
+  var result = [];
+
+  while (data.length > 0) {
+    var leftIndex = 0;
+    var rightIndex = data.length - 1;
+    var medium = Math.floor((leftIndex + rightIndex) / 2);
+
+    while (absolute(leftIndex, rightIndex) > 1) {
+      if (data[medium] > currentValue) {
+        rightIndex = medium;
+      } else {
+        leftIndex = medium;
+      }
+
+      medium = Math.floor((leftIndex + rightIndex) / 2);
+    }
+
+    if (absolute(currentValue, data[leftIndex]) < absolute(currentValue, data[rightIndex])) {
+      currentValue = data[leftIndex];
+      result.push(data.splice(leftIndex, 1).pop());
+    } else {
+      currentValue = data[rightIndex];
+      result.push(data.splice(rightIndex, 1).pop());
+    }
+
+    // console.log(result);
+  }
+  
+  return result;
+}
+
 function ssf() {
-  alert("algoritmo SSF");
+  getInputData();
+  transformInputFile(inputFile, algorithms.ssf)
 }
 
 function scan() {
@@ -101,6 +136,9 @@ function cscan() {
   alert("algoritmo C-SCAN");
 }
 
+const auxSortFunc = (a, b) => a - b;
+
 const algorithms = {
-  fifo: result => { loadOutput(initialPosition, transformStringData(result)); }
+  fifo: result => { loadOutput(initialPosition, transformStringData(result)); },
+  ssf: result => { loadOutput(initialPosition, sortSSF(initialPosition, transformStringData(result))); }
 }
