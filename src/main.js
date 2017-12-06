@@ -40,6 +40,7 @@ function createFileFromDataArray(dataArray) {
   dataArray.forEach(numb => { dataString = dataString + String(numb) + "-" });
   var outputLink = document.createElement("a");
   outputLink.innerHTML = `<a href='data:text/plain;charset=utf-16,${encodeURIComponent(dataString)}' download='output.${inputFileType}'">Baixe o arquivo com a sequencia ordenada!</a>`;
+  outputFileContainer.innerHTML = "";
   outputFileContainer.appendChild(outputLink);
 }
 
@@ -89,9 +90,9 @@ function fifo() {
   transformInputFile(inputFile, algorithms.fifo);
 }
 
-function sortSSF(initialPosition, data) {
+function sortSSF(initialPositionValue, data) {
   data.sort(auxSortFunc);
-  var currentValue = initialPosition;
+  var currentValue = initialPositionValue;
   var result = [];
 
   while (data.length > 0) {
@@ -116,8 +117,6 @@ function sortSSF(initialPosition, data) {
       currentValue = data[rightIndex];
       result.push(data.splice(rightIndex, 1).pop());
     }
-
-    // console.log(result);
   }
   
   return result;
@@ -125,11 +124,46 @@ function sortSSF(initialPosition, data) {
 
 function ssf() {
   getInputData();
-  transformInputFile(inputFile, algorithms.ssf)
+  transformInputFile(inputFile, algorithms.ssf);
+}
+
+function sortSCAN(initialPositionValue, data) {
+  data.sort(auxSortFunc);
+  var increasing = true;
+  var result = [];
+
+  if (absolute(initialPositionValue, data[0]) < absolute(initialPositionValue, data[data.length - 1])) {
+    increasing = false;
+  }
+
+  var leftIndex = 0;
+  var rightIndex = data.length - 1;
+  var medium = Math.floor((leftIndex + rightIndex) / 2);
+
+  while (absolute(leftIndex, rightIndex) > 1) {
+    if (data[medium] > initialPositionValue) {
+      rightIndex = medium;
+    } else {
+      leftIndex = medium;
+    }
+
+    medium = Math.floor((leftIndex + rightIndex) / 2);
+  }
+
+  if (increasing) {
+    for (var i = rightIndex; i < data.length; i++) result.push(data[i]);
+    for (var i = leftIndex; i > -1; i--) result.push(data[i]);
+  } else {
+    for (var i = leftIndex; i > -1; i--) result.push(data[i]);
+    for (var i = rightIndex; i < data.length; i++) result.push(data[i]);
+  }
+
+  return result;
 }
 
 function scan() {
-  alert("algoritmo SCAN");
+  getInputData();
+  transformInputFile(inputFile, algorithms.scan);
 }
 
 function cscan() {
@@ -140,5 +174,6 @@ const auxSortFunc = (a, b) => a - b;
 
 const algorithms = {
   fifo: result => { loadOutput(initialPosition, transformStringData(result)); },
-  ssf: result => { loadOutput(initialPosition, sortSSF(initialPosition, transformStringData(result))); }
+  ssf: result => { loadOutput(initialPosition, sortSSF(initialPosition, transformStringData(result))); },
+  scan: result => { loadOutput(initialPosition, sortSCAN(initialPosition, transformStringData(result))); }
 }
