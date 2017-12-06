@@ -2,6 +2,10 @@
 
 Aplicação que implementa algoritmos de acesso à disco.
 
+## Prévia
+
+![PREVIEW_1](media/screenshot01.png)
+
 ## Desenvolvedores
 * Augusto Falcão | @falcaoaugustos
 * Caio Cavalcante | @caio629
