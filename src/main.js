@@ -77,12 +77,23 @@ function calculateVariance(avarage, data) {
 // calculateStandardDeviation() {}
 
 function loadOutput(initialPosition, data) {
-  console.log(data);
   displacement.innerHTML = calculateDisplacement(initialPosition, data);
   avarageDisplacement.innerHTML = calculateAvarageDisplacement(displacement.innerHTML, data);
   variance.innerHTML = calculateVariance(avarageDisplacement.innerHTML, data);
 
   createFileFromDataArray(data);
+}
+
+function loadOutputCSCAN(initialPosition, data) {
+  displacement.innerHTML = calculateDisplacement(initialPosition, data[0]) + calculateDisplacement(initialPosition, data[1]);
+  avarageDisplacement.innerHTML = calculateAvarageDisplacement(displacement.innerHTML, data);
+  variance.innerHTML = calculateVariance(avarageDisplacement.innerHTML, data);
+
+  var newData = [];
+  data[0].forEach(value => newData.push(value));
+  data[1].forEach(value => newData.push(value));
+
+  createFileFromDataArray(newData);
 }
 
 function fifo() {
@@ -166,8 +177,44 @@ function scan() {
   transformInputFile(inputFile, algorithms.scan);
 }
 
+function sortCSCAN(initialPositionValue, data) {
+  data.sort(auxSortFunc);
+  var increasing = true;
+  var result01 = [];
+  var result02 = [];
+
+  var leftIndex = 0;
+  var rightIndex = data.length - 1;
+  var medium = Math.floor((leftIndex + rightIndex) / 2);
+
+  while (absolute(leftIndex, rightIndex) > 1) {
+    if (data[medium] > initialPositionValue) {
+      rightIndex = medium;
+    } else {
+      leftIndex = medium;
+    }
+
+    medium = Math.floor((leftIndex + rightIndex) / 2);
+  }
+
+  if (absolute(initialPositionValue, data[leftIndex]) < absolute(initialPositionValue, data[rightIndex])) {
+    increasing = false;
+  }
+
+  if (increasing) {
+    for (var i = rightIndex; i < data.length; i++) result01.push(data[i]);
+    for (var i = 0; i < rightIndex; i++) result02.push(data[i]);
+  } else {
+    for (var i = leftIndex; i > -1; i--) result01.push(data[i]);
+    for (var i = data.length - 1; i > leftIndex; i--) result02.push(data[i]);
+  }
+
+  return [result01, result02];
+}
+
 function cscan() {
-  alert("algoritmo C-SCAN");
+  getInputData();
+  transformInputFile(inputFile, algorithms.cscan);
 }
 
 const auxSortFunc = (a, b) => a - b;
@@ -175,5 +222,6 @@ const auxSortFunc = (a, b) => a - b;
 const algorithms = {
   fifo: result => { loadOutput(initialPosition, transformStringData(result)); },
   ssf: result => { loadOutput(initialPosition, sortSSF(initialPosition, transformStringData(result))); },
-  scan: result => { loadOutput(initialPosition, sortSCAN(initialPosition, transformStringData(result))); }
+  scan: result => { loadOutput(initialPosition, sortSCAN(initialPosition, transformStringData(result))); },
+  cscan: result => { loadOutputCSCAN(initialPosition, sortCSCAN(initialPosition, transformStringData(result))); }
 }
