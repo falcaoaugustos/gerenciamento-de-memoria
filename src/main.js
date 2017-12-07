@@ -51,11 +51,11 @@ function absolute(a, b) {
 }
 
 function calculateDisplacement(initialPosition, data) {
-  var displacement = 0;
+  var displacement = [];
   var currentValue = initialPosition;
 
   data.forEach(i => {
-    displacement = displacement + absolute(currentValue, i);
+    displacement.push(absolute(currentValue, i));
     currentValue = i;
   });
 
@@ -77,23 +77,31 @@ function calculateVariance(avarage, data) {
 // calculateStandardDeviation() {}
 
 function loadOutput(initialPosition, data) {
-  displacement.innerHTML = calculateDisplacement(initialPosition, data);
+  const displacementCollection = calculateDisplacement(initialPosition, data);
+  displacement.innerHTML = displacementCollection.reduce((a, b) => a + b);
   avarageDisplacement.innerHTML = calculateAvarageDisplacement(displacement.innerHTML, data);
-  variance.innerHTML = calculateVariance(avarageDisplacement.innerHTML, data);
+  variance.innerHTML = calculateVariance(avarageDisplacement.innerHTML, displacementCollection);
 
   createFileFromDataArray(data);
 }
 
 function loadOutputCSCAN(initialPosition, data) {
-  displacement.innerHTML = calculateDisplacement(initialPosition, data[0]) + calculateDisplacement(initialPosition, data[1]);
-  avarageDisplacement.innerHTML = calculateAvarageDisplacement(displacement.innerHTML, data);
-  variance.innerHTML = calculateVariance(avarageDisplacement.innerHTML, data);
+  const secondInitialPosition = data[1].splice(0, 1).pop();
+  const displacementCollection01 = calculateDisplacement(initialPosition, data[0]);
+  const displacementCollection02 = calculateDisplacement(secondInitialPosition, data[1]);
+  var displacementCollection = [];
+  displacementCollection01.forEach(value => displacementCollection.push(value));
+  displacementCollection02.forEach(value => displacementCollection.push(value));
+  displacement.innerHTML = displacementCollection.reduce((a, b) => a + b);
 
-  var newData = [];
-  data[0].forEach(value => newData.push(value));
-  data[1].forEach(value => newData.push(value));
+  var generatedData = [];
+  data[0].forEach(value  => generatedData.push(value));
+  generatedData.push(secondInitialPosition);
+  data[1].forEach(value => generatedData.push(value));
+  avarageDisplacement.innerHTML = calculateAvarageDisplacement(displacement.innerHTML, generatedData);
+  variance.innerHTML = calculateVariance(avarageDisplacement.innerHTML, displacementCollection);
 
-  createFileFromDataArray(newData);
+  createFileFromDataArray(generatedData);
 }
 
 function fifo() {
