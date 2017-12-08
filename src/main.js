@@ -105,6 +105,7 @@ function loadOutputCSCAN(initialPosition, data) {
   data[1].forEach(value => generatedData.push(value));
   avarageDisplacement.innerHTML = calculateAvarageDisplacement(displacement.innerHTML, generatedData);
   variance.innerHTML = calculateVariance(avarageDisplacement.innerHTML, displacementCollection);
+  standardDeviation.innerHTML = calculateStandardDeviation(variance.innerHTML);
 
   createFileFromDataArray(generatedData);
 }
