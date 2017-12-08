@@ -74,13 +74,16 @@ function calculateVariance(avarage, data) {
   return variance;
 }
 
-// calculateStandardDeviation() {}
+function calculateStandardDeviation(variance) {
+  return Math.sqrt(variance);
+}
 
 function loadOutput(initialPosition, data) {
   const displacementCollection = calculateDisplacement(initialPosition, data);
   displacement.innerHTML = displacementCollection.reduce((a, b) => a + b);
   avarageDisplacement.innerHTML = calculateAvarageDisplacement(displacement.innerHTML, data);
   variance.innerHTML = calculateVariance(avarageDisplacement.innerHTML, displacementCollection);
+  standardDeviation.innerHTML = calculateStandardDeviation(variance.innerHTML);
 
   createFileFromDataArray(data);
 }
