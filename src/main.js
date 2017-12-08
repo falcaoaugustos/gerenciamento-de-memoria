@@ -68,10 +68,12 @@ function calculateAvarageDisplacement(displacement, data) {
 
 function calculateVariance(avarage, data) {
   var variance = 0;
+
   data.forEach(i => {
     variance = variance + absolute(avarage, i) ** 2;
   });
-  return variance;
+
+  return variance / data.length;
 }
 
 function calculateStandardDeviation(variance) {
