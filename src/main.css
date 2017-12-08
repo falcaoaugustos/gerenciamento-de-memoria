@@ -37,8 +37,21 @@
   background-color: #555555;
 }
 
+#outputContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+}
+
 .outputInfo {
   width: 600px;
   padding: 5px 0;
+  text-align: center;
+}
+
+#sortedOutputFile {
+  flex: 1;
   text-align: center;
 }
