@@ -73,7 +73,7 @@ function calculateVariance(avarage, data) {
     variance = variance + absolute(avarage, i) ** 2;
   });
 
-  return variance / data.length;
+  return variance / (data.length - 1);
 }
 
 function calculateStandardDeviation(variance) {
@@ -143,7 +143,7 @@ function sortSSF(initialPositionValue, data) {
       result.push(data.splice(rightIndex, 1).pop());
     }
   }
-  
+
   return result;
 }
 
