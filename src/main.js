@@ -11,6 +11,10 @@ var variance = document.getElementById("outputVariance");
 var standardDeviation = document.getElementById("outputStandardDeviation");
 var outputFileContainer = document.getElementById("sortedOutputFile");
 
+var avarageTimeDisplacement = document.getElementById("outputAvarageTimeDisplacement");
+var timeVariance = document.getElementById("outputAvarageTimeVariance");
+var timeStandardDeviation = document.getElementById("outputAvarageTimeStandardDeviation");
+
 
 function getInputData() {
   var inputForm = document.getElementById("inputForm");
@@ -48,6 +52,39 @@ function absolute(a, b) {
   return (a - b) < 0
   ? (a - b) * -1
   : (a - b);
+}
+
+function calculateTimeDisplacement(initialPosition, data) {
+  var timeDisplacement = [];
+  var currentValue = initialPosition;
+
+  data.forEach(i => {
+    timeDisplacement.push(absolute(currentValue, i) * seekTime);
+    currentValue = i;
+  });
+
+  return timeDisplacement;
+}
+
+function calculateTimeVarianceSCAN(avarageTime, initialPosition, data) {
+  var index = data.findIndex(el => el == 0); 
+  if (index != -1) {
+    data.splice(index, 1);
+  }
+  index = data.findIndex(el => el == 9999); 
+  if (index != -1) {
+    data.splice(index, 1);
+  }
+
+  var timeDisplacementCollection = calculateTimeDisplacement(initialPosition, data);
+
+  var variance = 0;
+
+  timeDisplacementCollection.forEach(i => {
+    variance = variance + absolute(avarageTime, i) ** 2;
+  });
+
+  return variance / (timeDisplacementCollection.length - 1);
 }
 
 function calculateDisplacement(initialPosition, data) {
@@ -108,6 +145,12 @@ function loadOutput(initialPosition, data) {
   variance.innerHTML = calculateVariance(avarageDisplacement.innerHTML, displacementCollection);
   standardDeviation.innerHTML = calculateStandardDeviation(variance.innerHTML);
 
+  const timeDisplacementCollection = calculateTimeDisplacement(initialPosition, data);
+  const timeDisplacement = timeDisplacementCollection.reduce((a, b) => a + b);
+  avarageTimeDisplacement.innerHTML = calculateAvarageDisplacement(timeDisplacement, timeDisplacementCollection);
+  timeVariance.innerHTML = calculateVariance(avarageTimeDisplacement.innerHTML, timeDisplacementCollection);
+  timeStandardDeviation.innerHTML = calculateStandardDeviation(timeVariance.innerHTML);
+
   createFileFromDataArray(data);
 }
 
@@ -117,6 +160,12 @@ function loadOutputSCAN(initialPosition, data) {
   avarageDisplacement.innerHTML = calculateAvarageDisplacement(displacement.innerHTML, data.slice(1, data.length));
   variance.innerHTML = calculateVarianceSCAN(avarageDisplacement.innerHTML, initialPosition, data);
   standardDeviation.innerHTML = calculateStandardDeviation(variance.innerHTML);
+
+  const timeDisplacementCollection = calculateTimeDisplacement(initialPosition, data);
+  const timeDisplacement = timeDisplacementCollection.reduce((a, b) => a + b);
+  avarageTimeDisplacement.innerHTML = calculateAvarageDisplacement(timeDisplacement, timeDisplacementCollection);
+  timeVariance.innerHTML = calculateTimeVarianceSCAN(avarageTimeDisplacement.innerHTML, initialPosition, data);
+  timeStandardDeviation.innerHTML = calculateStandardDeviation(timeVariance.innerHTML);
 
   createFileFromDataArray(data);
 }
