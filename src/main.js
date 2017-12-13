@@ -187,6 +187,16 @@ function loadOutputCSCAN(initialPosition, data) {
   variance.innerHTML = calculateVariance(avarageDisplacement.innerHTML, displacementCollection);
   standardDeviation.innerHTML = calculateStandardDeviation(variance.innerHTML);
 
+  const timeDisplacementCollection01 = calculateTimeDisplacement(initialPosition, data[0]);
+  const timeDisplacementCollection02 = calculateTimeDisplacement(secondInitialPosition, data[1]);
+  var timeDisplacementCollection = [];
+  timeDisplacementCollection01.forEach(value => timeDisplacementCollection.push(value));
+  timeDisplacementCollection02.forEach(value => timeDisplacementCollection.push(value));
+  const timeDisplacement = timeDisplacementCollection.reduce((a, b) => a + b);
+  avarageTimeDisplacement.innerHTML = calculateAvarageDisplacement(timeDisplacement, timeDisplacementCollection);
+  timeVariance.innerHTML = calculateVariance(avarageTimeDisplacement.innerHTML, timeDisplacementCollection);
+  timeStandardDeviation.innerHTML = calculateStandardDeviation(timeVariance.innerHTML);
+
   createFileFromDataArray(generatedData);
 }
 
