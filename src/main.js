@@ -66,27 +66,6 @@ function calculateTimeDisplacement(initialPosition, data) {
   return timeDisplacement;
 }
 
-function calculateTimeVarianceSCAN(avarageTime, initialPosition, data) {
-  var index = data.findIndex(el => el == 0); 
-  if (index != -1) {
-    data.splice(index, 1);
-  }
-  index = data.findIndex(el => el == 9999); 
-  if (index != -1) {
-    data.splice(index, 1);
-  }
-
-  var timeDisplacementCollection = calculateTimeDisplacement(initialPosition, data);
-
-  var variance = 0;
-
-  timeDisplacementCollection.forEach(i => {
-    variance = variance + absolute(avarageTime, i) ** 2;
-  });
-
-  return variance / (timeDisplacementCollection.length - 1);
-}
-
 function calculateDisplacement(initialPosition, data) {
   var displacement = [];
   var currentValue = initialPosition;
@@ -100,7 +79,7 @@ function calculateDisplacement(initialPosition, data) {
 }
 
 function calculateAvarageDisplacement(displacement, data) {
-  return displacement / data.length;
+  return displacement / (data.length);
 }
 
 function calculateVariance(avarage, data) {
@@ -111,27 +90,6 @@ function calculateVariance(avarage, data) {
   });
 
   return variance / (data.length - 1);
-}
-
-function calculateVarianceSCAN(avarage, initialPosition, data) {
-  var index = data.findIndex(el => el == 0); 
-  if (index != -1) {
-    data.splice(index, 1);
-  }
-  index = data.findIndex(el => el == 9999); 
-  if (index != -1) {
-    data.splice(index, 1);
-  }
-
-  var displacementCollection = calculateDisplacement(initialPosition, data);
-
-  var variance = 0;
-
-  displacementCollection.forEach(i => {
-    variance = variance + absolute(avarage, i) ** 2;
-  });
-
-  return variance / (displacementCollection.length - 1);
 }
 
 function calculateStandardDeviation(variance) {
@@ -149,22 +107,6 @@ function loadOutput(initialPosition, data) {
   const timeDisplacement = timeDisplacementCollection.reduce((a, b) => a + b);
   avarageTimeDisplacement.innerHTML = calculateAvarageDisplacement(timeDisplacement, timeDisplacementCollection);
   timeVariance.innerHTML = calculateVariance(avarageTimeDisplacement.innerHTML, timeDisplacementCollection);
-  timeStandardDeviation.innerHTML = calculateStandardDeviation(timeVariance.innerHTML);
-
-  createFileFromDataArray(data);
-}
-
-function loadOutputSCAN(initialPosition, data) {
-  const displacementCollection = calculateDisplacement(initialPosition, data);
-  displacement.innerHTML = displacementCollection.reduce((a, b) => a + b);
-  avarageDisplacement.innerHTML = calculateAvarageDisplacement(displacement.innerHTML, data.slice(1, data.length));
-  variance.innerHTML = calculateVarianceSCAN(avarageDisplacement.innerHTML, initialPosition, data);
-  standardDeviation.innerHTML = calculateStandardDeviation(variance.innerHTML);
-
-  const timeDisplacementCollection = calculateTimeDisplacement(initialPosition, data);
-  const timeDisplacement = timeDisplacementCollection.reduce((a, b) => a + b);
-  avarageTimeDisplacement.innerHTML = calculateAvarageDisplacement(timeDisplacement, timeDisplacementCollection);
-  timeVariance.innerHTML = calculateTimeVarianceSCAN(avarageTimeDisplacement.innerHTML, initialPosition, data);
   timeStandardDeviation.innerHTML = calculateStandardDeviation(timeVariance.innerHTML);
 
   createFileFromDataArray(data);
@@ -247,7 +189,7 @@ function sortSCAN(initialPositionValue, data) {
   var increasing = true;
   var result = [];
 
-  if (absolute(initialPositionValue, 0) < absolute(initialPositionValue, cylinder - 1)) {
+if (absolute(initialPositionValue, data[0]) < absolute(initialPositionValue, data[data.length - 1])) {
     increasing = false;
   }
 
@@ -266,13 +208,11 @@ function sortSCAN(initialPositionValue, data) {
   }
 
   if (increasing) {
-    data.push(cylinder - 1);
     for (var i = rightIndex; i < data.length; i++) result.push(data[i]);
     for (var i = leftIndex; i > -1; i--) result.push(data[i]);
   } else {
-    data.splice(0, 0, 0);
-    for (var i = leftIndex + 1; i > -1; i--) result.push(data[i]);
-    for (var i = rightIndex + 1; i < data.length; i++) result.push(data[i]);
+	for (var i = leftIndex; i > -1; i--) result.push(data[i]);
+    for (var i = rightIndex; i < data.length; i++) result.push(data[i]);
   }
 
   return result;
@@ -330,6 +270,6 @@ const auxSortFunc = (a, b) => a - b;
 const algorithms = {
   fifo: result => { loadOutput(initialPosition, transformStringData(result)); },
   ssf: result => { loadOutput(initialPosition, sortSSF(initialPosition, transformStringData(result))); },
-  scan: result => { loadOutputSCAN(initialPosition, sortSCAN(initialPosition, transformStringData(result))); },
+  scan: result => { loadOutput(initialPosition, sortSCAN(initialPosition, transformStringData(result))); },
   cscan: result => { loadOutputCSCAN(initialPosition, sortCSCAN(initialPosition, transformStringData(result))); }
 }
