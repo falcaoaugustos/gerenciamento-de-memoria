@@ -3,10 +3,12 @@
 Aplicação que implementa algoritmos de acesso à disco.
 
 Os algoritmos implementados são:
-* FIFO;
-* SSF;
-* SCAN;
-* C-SCAN.
+* FIFO
+* SSF
+* SCAN
+* C-SCAN
+
+Especificações: [PROJETO](media/projeto.pdf).
 
 ## Prévia
 
@@ -21,6 +23,9 @@ Os algoritmos implementados são:
 ## Uso
 
 Para executar esse projeto, clone o repositório e execute o projeto.
+Preencha o formulário com as informações do disco.
+Carregue o arquivo que contenha o conjunto de acessos.
+Clique no algoritmo de sua preferência para obter as informações de saída.
 
 ## Contribuição
 
