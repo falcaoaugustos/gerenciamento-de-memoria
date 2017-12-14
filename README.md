@@ -2,9 +2,16 @@
 
 Aplicação que implementa algoritmos de acesso à disco.
 
+Os algoritmos implementados são:
+* FIFO;
+* SSF;
+* SCAN;
+* C-SCAN.
+
 ## Prévia
 
 ![PREVIEW_1](media/screenshot01.png)
+![PREVIEW_2](media/screenshot02.png)
 
 ## Desenvolvedores
 * Augusto Falcão | @falcaoaugustos
